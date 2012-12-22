@@ -4,13 +4,12 @@ class MapSieve private(s: Map[Int, List[Multiples]] = Map()) {
   def contains(n: Int) = s.contains(n)
 
   def +(implicit ms: Multiples): MapSieve = {
-    val newMap = if (contains(ms.n)) (s - ms.n) ++ s(ms.n).map {
+    new MapSieve(if (contains(ms.n)) (s - ms.n) ++ s(ms.n).map {
       m =>
         m.next()
         mapEntry(s, m)
     }
-    else s + mapEntry(s, ms)
-    new MapSieve(newMap)
+    else s + mapEntry(s, ms))
   }
 
   private def mapEntry(m: Map[Int, List[Multiples]], ms: Multiples): (Int, List[Multiples]) = {
