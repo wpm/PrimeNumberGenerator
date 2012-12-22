@@ -19,10 +19,20 @@ class PrimeNumberGeneratorTests extends FlatSpec {
 
   behavior of "Candidates"
 
-  they should "be increasing sequences, skipping appropriate factors" in {
+  they should "should have the first few elements correct" in {
     expect(List(2, 3, 4, 5))(new Integers().take(4).toList)
     expect(List(3, 5, 7, 9))(new OddIntegers().take(4).toList)
+    expect(List(5, 7, 11, 13))(new Skip23().take(4).toList)
   }
+
+  they should "skip the appropriate factors in their first " + n + " elements" in {
+    expect(None)(new Integers().zip(skip()).take(n).find(p => p._1 != p._2))
+    expect(None)(new OddIntegers().zip(skip(2)).take(n).find(p => p._1 != p._2))
+    expect(None)(new Skip23().zip(skip(2, 3)).take(n).find(p => p._1 != p._2))
+    expect(None)(new Skip2357().zip(skip(2, 3, 5, 7)).take(n).find(p => p._1 != p._2))
+  }
+
+  private def skip(ns: Int*): Iterator[Int] = Iterator.from(2).filterNot(n => ns.exists(n % _ == 0))
 
   behavior of "Sieve"
 

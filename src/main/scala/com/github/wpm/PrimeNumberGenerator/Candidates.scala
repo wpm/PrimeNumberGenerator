@@ -26,3 +26,22 @@ class OddIntegers extends Candidates {
 
   var head = 3
 }
+
+abstract class WheelCandidates(start: Int, steps: Array[Int]) extends Candidates {
+  private var i = 0
+
+  def next() = {
+    val next = head
+    head += steps(i)
+    i = (i + 1) % steps.length
+    next
+  }
+
+  var head = start
+}
+
+class Skip23 extends WheelCandidates(5, Array(2, 4))
+
+class Skip2357 extends WheelCandidates(11,
+  Array(2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 6, 6, 2, 6, 4, 2, 6, 4, 6, 8, 4, 2, 4, 2, 4, 8, 6, 4, 6, 2, 4, 6, 2, 6, 6, 4, 2,
+    4, 6, 2, 6, 4, 2, 4, 2, 10, 2, 10))
