@@ -7,11 +7,7 @@ class QueueSieve private(q: mutable.PriorityQueue[Multiples] = mutable.PriorityQ
 
   def +(n: Int): QueueSieve = {
     if (q.isEmpty || n < q.head.head) q += Multiples(n)
-    else while (n >= q.head.head) {
-      val ms = q.dequeue()
-      ms.next()
-      q += ms
-    }
+    else while (n >= q.head.head) q += q.dequeue().advance
     this
   }
 

@@ -4,11 +4,7 @@ class MapSieve private(s: Map[Int, List[Multiples]] = Map()) extends Sieve {
   def contains(n: Int) = s.contains(n)
 
   def +(n: Int): MapSieve = {
-    new MapSieve(if (contains(n)) (s - n) ++ s(n).map {
-      ms =>
-        ms.next()
-        mapEntry(s, ms)
-    }
+    new MapSieve(if (contains(n)) (s - n) ++ s(n).map(ms => mapEntry(s, ms.advance))
     else s + mapEntry(s, Multiples(n)))
   }
 
