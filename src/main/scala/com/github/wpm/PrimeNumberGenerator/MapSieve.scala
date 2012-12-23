@@ -1,15 +1,15 @@
 package com.github.wpm.PrimeNumberGenerator
 
-class MapSieve private(s: Map[Int, List[Multiples]] = Map()) {
+class MapSieve private(s: Map[Int, List[Multiples]] = Map()) extends Sieve {
   def contains(n: Int) = s.contains(n)
 
-  def +(implicit ms: Multiples): MapSieve = {
-    new MapSieve(if (contains(ms.n)) (s - ms.n) ++ s(ms.n).map {
-      m =>
-        m.next()
-        mapEntry(s, m)
+  def +(n: Int): MapSieve = {
+    new MapSieve(if (contains(n)) (s - n) ++ s(n).map {
+      ms =>
+        ms.next()
+        mapEntry(s, ms)
     }
-    else s + mapEntry(s, ms))
+    else s + mapEntry(s, Multiples(n)))
   }
 
   private def mapEntry(m: Map[Int, List[Multiples]], ms: Multiples): (Int, List[Multiples]) = {

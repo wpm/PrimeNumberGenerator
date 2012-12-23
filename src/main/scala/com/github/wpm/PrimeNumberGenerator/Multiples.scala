@@ -19,6 +19,4 @@ class Multiples(val n: Int) extends BufferedIterator[Int] {
 
 object Multiples {
   def apply(n: Int) = new Multiples(n)
-
-  implicit def intToMultiples(n: Int) = Multiples(n)
 }

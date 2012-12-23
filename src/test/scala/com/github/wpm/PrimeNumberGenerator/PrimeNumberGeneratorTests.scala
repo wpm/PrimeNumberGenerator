@@ -34,7 +34,7 @@ class PrimeNumberGeneratorTests extends FlatSpec {
 
   private def skip(ns: Int*): Iterator[Int] = Iterator.from(2).filterNot(n => ns.exists(n % _ == 0))
 
-  behavior of "Sieve"
+  behavior of "MapSieve"
 
   it should "always contain the next composite number and not the next prime" in {
     expect(false)(MapSieve().contains(2))
@@ -49,6 +49,15 @@ class PrimeNumberGeneratorTests extends FlatSpec {
 
   it should "produce the same first " + n + " primes as trial division starting at 2" in {
     expect(None)(MapGenerator().zip(trialDivisionPrimes).take(n).find(p => p._1 != p._2))
+  }
+
+  behavior of "QueueGenerator"
+
+  it should "produce the same first " + n + " primes as trial division starting at the appropriate number" in {
+    expect(None)(QueueGenerator(new Integers).zip(trialDivisionPrimes).take(n).find(p => p._1 != p._2))
+    expect(None)(QueueGenerator(new OddIntegers).zip(trialDivisionPrimes.dropWhile(_ < 3)).take(n).find(p => p._1 != p._2))
+    expect(None)(QueueGenerator(new Skip23).zip(trialDivisionPrimes.dropWhile(_ < 3)).take(n).find(p => p._1 != p._2))
+    expect(None)(QueueGenerator().zip(trialDivisionPrimes.dropWhile(_ < 11)).take(n).find(p => p._1 != p._2))
   }
 
   private def trialDivisionPrimes: Iterator[Int] = {

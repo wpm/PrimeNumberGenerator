@@ -1,7 +1,7 @@
 package com.github.wpm.PrimeNumberGenerator
 
 
-abstract class PrimeGenerator(candidates: Candidates, var sieve: MapSieve) extends Iterator[Int] {
+abstract class PrimeGenerator(candidates: Candidates, var sieve: Sieve) extends Iterator[Int] {
   def hasNext = true
 
   def next() = {
@@ -14,9 +14,14 @@ abstract class PrimeGenerator(candidates: Candidates, var sieve: MapSieve) exten
   override def toString() = sieve.toString
 }
 
-class MapGenerator(candidates: Candidates) extends PrimeGenerator(candidates, MapSieve())
+class MapGenerator extends PrimeGenerator(new Integers(), MapSieve())
 
 object MapGenerator {
-  def apply(candidates: Candidates = new Integers()) = new MapGenerator(candidates)
+  def apply() = new MapGenerator()
 }
 
+class QueueGenerator(candidates: Candidates) extends PrimeGenerator(candidates, QueueSieve())
+
+object QueueGenerator {
+  def apply(candidates: Candidates = new Skip2357) = new QueueGenerator(candidates)
+}
