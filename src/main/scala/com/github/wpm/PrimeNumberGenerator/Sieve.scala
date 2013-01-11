@@ -3,6 +3,15 @@ package com.github.wpm.PrimeNumberGenerator
 import collection.mutable
 
 object Sieve {
+  /**
+   * Return a sequence of prime numbers from a sequence of integers using the Sieve of Eratosthenes.
+   *
+   * The integer sequence must consist of all integers greater than or equal to `p`, skipping values that are multiples
+   * of primes less than `p`. The simplest input sequence is just 2,3,4,5...
+   *
+   * @param ns sequence of numbers
+   * @return prime numbers in the sequence
+   */
   def primes(ns: Stream[Int] = skip2357): Stream[Int] = {
     def primesRec(ns: Stream[Int], q: mutable.PriorityQueue[Stream[Int]]): Stream[Int] = {
       def smallestComposite = q.head.head
@@ -16,6 +25,9 @@ object Sieve {
     ns.head #:: primesRec(ns.tail, mutable.PriorityQueue(ns.map(ns.head * _))(MultipleOrdering))
   }
 
+  /**
+   * Prime multiple sequences are stored in the priority queue in the order of their smallest element.
+   */
   object MultipleOrdering extends Ordering[Stream[Int]] {
     def compare(x: Stream[Int], y: Stream[Int]) = y.head.compare(x.head)
   }
@@ -25,7 +37,13 @@ object Sieve {
     wheelRec(start, Stream.from(0).flatMap(_ => steps))
   }
 
+  /**
+   * Integers from 5 on, skipping multiples of 2 and 3
+   */
   val skip23 = wheel(5, Seq(2, 4))
+  /**
+   * Integers from 11 on, skipping multiples of 2, 3, 5, and 7
+   */
   val skip2357 = wheel(11,
     Seq(2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 6, 6, 2, 6, 4, 2, 6, 4, 6, 8, 4, 2, 4, 2, 4, 8, 6, 4, 6, 2, 4, 6, 2, 6, 6, 4, 2,
       4, 6, 2, 6, 4, 2, 4, 2, 10, 2, 10))
